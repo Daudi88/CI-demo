@@ -5,16 +5,15 @@ on:
     branches: [ development ]
   pull_request:
     branches: [ main ]
-    tags: 
+    tags:
       - 'v*'
-
 jobs:
   build:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    environment:
+    environment: 
       name: development
-      url: https://github.com/Daudi88/CI-demo/tree/development
+      url: https://github.com/Duaid88/CI-demo/tree/development
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -25,10 +24,10 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-      
-      
+  
   test:
-    if: github.event_name == 'pull_request
+    name: test
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -38,14 +37,15 @@ jobs:
         dotnet-version: 5.0.x
     - name: Test
       run: dotnet test --verbosity normal
-      
+  
   release:
+    name: Create Release
     needs: test
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    environment:
+    environment: 
       name: production
-      url: https://github.com/Daudi88/CI-demo/releases
+      url: https://github.com/Duaid88/CI-demo/releases
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -53,14 +53,14 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref}}
+          release_name: Release ${{ github.ref }}
           body: |
             Changes in this Release
             - First Change
             - Second Change
           draft: false
           prerelease: false
-    
+

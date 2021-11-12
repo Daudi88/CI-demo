@@ -5,14 +5,16 @@ on:
     branches: [ development ]
   pull_request:
     branches: [ main ]
+    tags: 
+      - 'v*'
 
 jobs:
   build:
-
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: development
-      url: https://github.com/Daudi88/CI-demo/releases
+      url: https://github.com/Daudi88/CI-demo/tree/development
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -26,10 +28,8 @@ jobs:
       
       
   test:
-
     if: github.event_name == 'pull_request
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -40,7 +40,6 @@ jobs:
       run: dotnet test --verbosity normal
       
   release:
-    name: Create Release
     needs: test
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

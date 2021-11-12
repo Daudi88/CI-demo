@@ -9,6 +9,7 @@ namespace CI_demo
             Console.WriteLine("Hello World again!");
             Console.WriteLine("Hello World two more times!");
             Console.WriteLine("Here we go!");
+            Console.WriteLine("Please work");
         }
     }
 }
